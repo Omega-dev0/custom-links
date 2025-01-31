@@ -22,25 +22,28 @@ const builder = new addonBuilder(manifest)
 let streams = {}
 let lastRefresh = 0
 function refreshStreams() {
-	axios.get("https://addon.aurelien-frettechambaud.workers.dev/").then(res =>{
+	axios.get("https://addon.aurelien-frettechambaud.workers.dev/").then(res => {
 		streams = res.data
 		lastRefresh = Date.now()
 		fs.writeFileSync("./streams.json", JSON.stringify(streams))
 	})
-	.catch(err => console.error(err))
+		.catch(err => console.error(err))
 }
 
 builder.defineStreamHandler(async args => {
-	console.log(args)
+	console.log("stream",args)
 	if (Date.now() - lastRefresh > 1000 * 60) {
 		refreshStreams()
 	}
-	if(streams[args.id]) {
-		const stream = {url: streams[args.id].Link, behaviorHints: { notWebReady: true }}
+	if (streams[args.id]) {
+		const stream = { url: streams[args.id].Link, behaviorHints: { notWebReady: true } }
 		return Promise.resolve({ streams: [stream] })
-	}else{
+	} else {
 		return Promise.resolve({ streams: [] })
 	}
 })
+
+
+
 
 module.exports = builder.getInterface()
