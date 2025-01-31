@@ -1,0 +1,11 @@
+{
+	"name": "stremio-addon-customlinks",
+	"version": "0.0.1",
+	"description": "custom links",
+	"scripts": {
+		"start": "node server.js"
+	},
+	"dependencies": {
+		"stremio-addon-sdk": "1.1.x"
+	}
+}
